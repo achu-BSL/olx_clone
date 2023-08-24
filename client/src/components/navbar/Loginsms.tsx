@@ -14,7 +14,7 @@ export const Loginsms: FC = () => {
             <div className="m-2 pr-2 border-r border-slate-900 border-opacity-25">
                 <span className="text-slate-500">+91</span>
             </div>
-          <input className="py-2 focus:outline-none" type="text" name="" id="phone-number" placeholder="Phone Number"/>
+          <input className="py-2 focus:outline-none" type="number" name="" id="phone-number" placeholder="Phone Number"/>
         </div>
         <div className="flex flex-col w-full gap-1">
         <button className="bg-black text-white text-xl py-3 rounded-md font-medium shadow-md">Next</button>
