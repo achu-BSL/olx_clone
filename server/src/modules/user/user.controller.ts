@@ -1,14 +1,23 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
-import { RegisterUserDto } from "./dto/register-user.dto";
-import { UserService } from "./user.service";
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { UserService } from './user.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('user')
 export class UserController {
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
-    constructor(private readonly userService: UserService) {}
 
-    @Get('mail')
-    mail() {
-        return this.userService.mail();
-    }
+  @Get('isexist/:credential')
+  async isExist(@Param('credential') credential: string) {
+    console.log('from isExist controller');
+    return await this.userService.isExist(credential);
+  }
+
+  @Post('register/email')
+  registerEmail(@Body('email') email: string) {
+    return this.authService.registerEmail(email);
+  }
 }

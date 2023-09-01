@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -18,8 +20,7 @@ import { ConfigModule } from '@nestjs/config';
         pass: process.env.PASSWORD
       }
     }
-  }),
-  UserModule],
+  }), AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

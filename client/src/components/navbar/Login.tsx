@@ -2,7 +2,7 @@ import React from "react";
 import { useOlxContext } from "../../context/useOlxContext";
 import { LoginMain } from "./LoginMain";
 import { Loginemail } from "./Loginemail";
-import { Loginsms } from "./Loginsms";
+import { Register } from "./Register";
 
 
 export const Login: React.FC = () => {
@@ -16,7 +16,7 @@ export const Login: React.FC = () => {
         {
             selectedLoginPage === 'main'? <LoginMain /> :
             selectedLoginPage === 'loginemail' ? <Loginemail /> :
-            <Loginsms /> 
+            <Register /> 
         }
         
         <div>{/* footer */}</div>

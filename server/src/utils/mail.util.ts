@@ -12,8 +12,8 @@ interface SendMailInterface {
 export class Mailer {
     constructor(private readonly mailService: MailerService) {}
 
-    sendMail({toEmail, subject, text}: SendMailInterface) {
-        this.mailService.sendMail({
+    async sendMail({toEmail, subject, text}: SendMailInterface) {
+        await this.mailService.sendMail({
             from: process.env.USER_EMAIL,
             to: toEmail,
             subject: subject,

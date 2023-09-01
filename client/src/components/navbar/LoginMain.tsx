@@ -9,7 +9,7 @@ export const LoginMain: FC = () => {
     <>
       <div className="bg-slate-400 h-1/3 my-4 min-h-[200px]">quotes</div>
       <div className="flex flex-col items-center gap-2">
-        <button className={`${loginStyle.button}`} onClick={() => changeSelectedLoginPage('loginsms')}>
+        <button className={`${loginStyle.button}`} onClick={() => changeSelectedLoginPage('register')}>
           <PhoneAndroid fontSize="small" /> Continue with Phone
         </button>
         <button className={`${loginStyle.button}`} >
