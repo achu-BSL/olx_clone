@@ -8,6 +8,7 @@ import { PrismaService } from 'src/prisma.service';
 import { Mailer } from 'src/utils/mail.util';
 import { RegisterUserDto } from './dto/register-user.dto';
 import * as bcrypt from 'bcrypt';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
@@ -87,5 +88,18 @@ export class UserService {
       console.log(err);
       throw new InternalServerErrorException();
     }
+  }
+
+  async login(loginUserDto: LoginUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { useremail: loginUserDto.email },
+    });
+    if (!user) throw new BadRequestException();
+    const password = await bcrypt.compare(loginUserDto.password, user.password);
+    if (!password) throw new BadRequestException();
+
+    return {
+      token: await this.authService.login(user.useremail, user.username),
+    };
   }
 }

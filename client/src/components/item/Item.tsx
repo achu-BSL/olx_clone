@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { gwagon } from '../../../assets';
+import { gwagon } from '../../assets';
 import { FavoriteBorder } from '@mui/icons-material';
 
 export const Item: FC = () => {

@@ -24,7 +24,6 @@ export const RegisterOTP: FC = () => {
         localStorage.removeItem("otpToken");
         setRegisterStage("details");
       } else {
-        console.log("Hi");
         resendButton.current!.disabled = true;
         setTimeout(() => {
           resendButton.current!.disabled = false;
@@ -34,10 +33,10 @@ export const RegisterOTP: FC = () => {
   }, []);
 
   const validateOTP = (otp: string): boolean => {
+    setSuccess(otpInp.current!);
     let valid = true;
     if (otp.length !== 4) {
       valid = false;
-      console.log("Hello");
       setError(otpInp.current!, "OTP should be 4 digit");
     }
 
@@ -63,10 +62,13 @@ export const RegisterOTP: FC = () => {
       if (res.ok) {
         localStorage.removeItem('otpToken');
         const data = await res.json();
-        console.log(data);
         localStorage.setItem('reg_details_token', data.register_details_token);
         setRegisterStage('details');
-      } else console.log("again moonji");
+      } else if (res.status === 400) {
+        setError(otpInp.current!, "Please provide valid OTP")
+      } else {
+        console.log("again moonji");
+      }
     }
   };
 

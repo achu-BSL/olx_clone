@@ -1,25 +1,35 @@
 import { createContext, useContext, useState } from "react";
-import { RegisterStage } from "../components/navbar/Register";
 
 interface OlxContextProvider {
   children: React.ReactNode;
 }
 
 type OlxAvailableLoginPages = "main" | "register" | "loginemail";
+type RegisterStage = "email" | "otp" | "details";
+type LoginStage = "email" | 'password';
+
 interface OlxLoginStateInterface {
   loginToggle: boolean;
   selectedLoginPage: OlxAvailableLoginPages;
   registerStage: RegisterStage;
+  loginStage: LoginStage
 }
 
 interface OlxContextInterface extends OlxLoginStateInterface {
+  user: string | null;
+  product_imgs: File[];
+  setUser: (username: string | null) => void;
   setLoginToggleHandler: () => void;
   changeSelectedLoginPage: (newLoginPage: OlxAvailableLoginPages) => void;
   setRegisterStage: (newStage: RegisterStage) => void;
+  addProductImg: (imgUrl: File) => void;
+  removeProductImg: (idx: number) => void;
 }
 
 interface OlxStateInterface {
   loginModal: OlxLoginStateInterface;
+  user: string | null;
+  product_imgs: File[];
 }
 
 const OlxContext = createContext<OlxContextInterface>(
@@ -36,7 +46,10 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
       loginToggle: false,
       selectedLoginPage: "main",
       registerStage: "email",
+      loginStage: 'email'
     },
+    user: null,
+    product_imgs: []
   });
   /**
    * Toggle login page.
@@ -69,15 +82,34 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
       loginModal: { ...prev.loginModal, registerStage: newStage },
     }));
   };
+
+  const setUser = (username: string | null) => {
+    setState(prev => ({...prev, user: username}))
+  }
+
+  const addProductImg = (file: File) => {
+    setState(prev => ({...prev, product_imgs: [...prev.product_imgs, file]}));
+  }
+
+  const removeProductImg = (idx: number) => {
+    setState(prev => ({...prev, product_imgs: prev.product_imgs.filter((imgurl, index) => index !== idx)}))
+  }
+
   return (
     <OlxContext.Provider
       value={{
+        loginStage: state.loginModal.loginStage,
         loginToggle: state.loginModal.loginToggle,
         selectedLoginPage: state.loginModal.selectedLoginPage,
         registerStage: state.loginModal.registerStage,
+        user: state.user,
+        product_imgs: state.product_imgs,
+        setUser,
         setLoginToggleHandler,
         changeSelectedLoginPage,
         setRegisterStage,
+        addProductImg,
+        removeProductImg
       }}
     >
       {children}

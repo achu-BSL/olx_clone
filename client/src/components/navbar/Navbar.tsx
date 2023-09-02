@@ -5,12 +5,16 @@ import { Login } from "./Login";
 import { useOlxContext } from "../../context/useOlxContext";
 
 export const Navbar: FC = () => {
-  const {loginToggle, setLoginToggleHandler} = useOlxContext();
+  const { loginToggle, setLoginToggleHandler, user, setUser } = useOlxContext();
+  console.log("rendering");
+  const logoutButtonHandler = () => {
+    setUser(null);
+    localStorage.removeItem('token');
+    console.log("Logout");
+  }
   return (
     <>
-    {loginToggle && 
-      <Login />
-    }
+      {loginToggle && <Login />}
       <nav className="bg-slate-200 bg-opacity-80  flex justify-center">
         <div className="flex w-full max-w-7xl gap-4 my-3 h-10">
           <span className="font-bold text-2xl">OlX</span>
@@ -39,9 +43,16 @@ export const Navbar: FC = () => {
             <option value="">English</option>
           </select>
           <div className="my-auto">
-            <button className="font-semibold underline" onClick={setLoginToggleHandler}>
-              Login
-            </button>
+            {user === null ? (
+              <button
+                className="font-semibold underline"
+                onClick={setLoginToggleHandler}
+              >
+                Login
+              </button>
+            ) : (
+              <button className="font-semibold underline" onClick={logoutButtonHandler}>Logout</button>
+            )}
             <button className="h-10 mx-2 px-4 border-2 rounded-full border-slate-900 sell-button">
               <span className="font-bold text-2xl">+</span>
               <span className="font-semibold">SELL</span>

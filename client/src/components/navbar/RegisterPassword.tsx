@@ -19,6 +19,7 @@ export const RegisterPassword: FC = () => {
   const [suc, setSuc] = useState(false);
 
   useEffect(() => {
+    registerButton.current!.disabled = true;
     const token = localStorage.getItem("reg_details_token");
     if (!token) setRegisterStage("email");
     else {
@@ -37,16 +38,13 @@ export const RegisterPassword: FC = () => {
   };
 
   const toggleRegisterButton = () => {
-    console.log(inpValidStatus);
     if (
       !inpValidStatus.usename ||
       !inpValidStatus.password ||
       !inpValidStatus.confirm_password
     ) {
-      console.log("disableeee");
       registerButton.current!.disabled = true;
     } else {
-      console.log("enableeee");
       registerButton.current!.disabled = false;
     }
   };
@@ -59,8 +57,6 @@ export const RegisterPassword: FC = () => {
       username: formData.get("username"),
       password: formData.get("password"),
     };
-
-    console.log(body);
 
     const res = await fetch("http://localhost:3000/user/register", {
       method: "POST",

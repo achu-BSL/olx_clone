@@ -1,8 +1,8 @@
 import React from "react";
 import { useOlxContext } from "../../context/useOlxContext";
 import { LoginMain } from "./LoginMain";
-import { Loginemail } from "./Loginemail";
 import { Register } from "./Register";
+import { Loginemail } from "./Loginemail";
 
 
 export const Login: React.FC = () => {

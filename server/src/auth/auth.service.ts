@@ -9,12 +9,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  private async generateToken (payload: object) {
+  private async generateToken(payload: object) {
     return await this.jwtService.signAsync(payload);
   }
 
-
-  async registerEmail(email: string) {
+  async registerEmail(email: string): Promise<{ otp_token: string }> {
     this.mailer.sendOTP(email);
     const payload = {
       email: email,
@@ -25,11 +24,20 @@ export class AuthService {
     };
   }
 
-  async registerDetailsToken (email: string) {
+  async registerDetailsToken(email: string): Promise<string> {
     const payload = {
       email,
-      varified: true
-    }
+      varified: true,
+    };
+    return await this.generateToken(payload);
+  }
+
+  async login(useremail: string, username: string): Promise<string> {
+    const payload = {
+      username,
+      email: useremail,
+    };
+
     return await this.generateToken(payload);
   }
 }

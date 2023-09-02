@@ -1,6 +1,6 @@
 import "./App.css";
 import { Navbar } from "./components/navbar/Navbar";
-import { Item } from "./components/navbar/item/Item";
+import { SellForm } from "./components/sell/SellForm";
 import { OlxContextProvider } from "./context/useOlxContext";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <>
       <OlxContextProvider>
         <Navbar />
-        <Item />
+        <SellForm />
       </OlxContextProvider>
     </>
   );
