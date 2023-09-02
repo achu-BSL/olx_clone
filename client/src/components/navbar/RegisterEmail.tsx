@@ -53,8 +53,11 @@ export const RegisterEmail: FC = () => {
         email: emailInp.current!.value,
       }),
     });
-    if (response.ok) console.log("Ok");
-    else console.log("Moonji");
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('otpToken', data.otp_token);
+      setRegisterStage('otp');
+    } else console.log("Moonji");
   };
 
   let timer: number;

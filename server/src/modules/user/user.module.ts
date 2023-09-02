@@ -8,6 +8,6 @@ import { AuthService } from "src/auth/auth.service";
 @Module({
     controllers: [UserController],
     providers: [UserService, PrismaService, Mailer, AuthService],
-    exports: [Mailer]
+    exports: [Mailer, PrismaService]
 })
 export class UserModule {}

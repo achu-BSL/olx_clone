@@ -34,3 +34,11 @@ model ProductImg {
   productId    Int
   imgUrl       String
 }
+
+
+model Otp {
+  otpId Int @id @default(autoincrement())
+  OTP String
+  email String @unique
+  expireOn DateTime
+}
