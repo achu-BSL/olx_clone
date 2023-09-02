@@ -15,7 +15,7 @@ model User {
   username  String    @unique
   useremail String    @unique
   password  String
-  userphone BigInt    @unique
+  userphone BigInt?    @unique
   Products  Product[]
 }
 

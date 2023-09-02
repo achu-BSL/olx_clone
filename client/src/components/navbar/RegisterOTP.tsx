@@ -50,9 +50,7 @@ export const RegisterOTP: FC = () => {
   };
 
   const verifyButtonClickHandler = async () => {
-    console.log(otpInp.current!.value);
     if (validateOTP(otpInp.current!.value)) {
-      //todo Fetch
       const res = await fetch("http://localhost:3000/user/register/otp", {
         method: "POST",
         headers: {
@@ -65,6 +63,7 @@ export const RegisterOTP: FC = () => {
       if (res.ok) {
         localStorage.removeItem('otpToken');
         const data = await res.json();
+        console.log(data);
         localStorage.setItem('reg_details_token', data.register_details_token);
         setRegisterStage('details');
       } else console.log("again moonji");

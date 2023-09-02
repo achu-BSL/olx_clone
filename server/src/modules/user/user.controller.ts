@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthService } from 'src/auth/auth.service';
 import { RegisterOtpGuard } from 'src/auth/registerotp.guard';
 import { Request as Req } from 'express';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { RegisterGuard } from 'src/auth/register.guard';
 
 @Controller('user')
 export class UserController {
@@ -35,5 +37,13 @@ export class UserController {
   @Get('register/otp/resend')
   async registerOTPResend (@Request() req: Req & {user: {email: string}}) {
     return this.userService.registerOTPResend(req.user.email);
+  }
+
+  @UseGuards(RegisterGuard)
+  @Post('register')
+  // @HttpCode(201)
+  async register (@Body() registerDto: RegisterUserDto, @Request() req: Req & {user: {email: string}}) {
+    registerDto.email = req.user.email;
+    return this.userService.register(registerDto);
   }
 }

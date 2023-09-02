@@ -60,6 +60,7 @@ export const RegisterEmail: FC = () => {
     } else console.log("Moonji");
   };
 
+  
   let timer: number;
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (timer) clearTimeout(timer);
