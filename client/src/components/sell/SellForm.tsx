@@ -23,7 +23,7 @@ export const SellForm: FC = () => {
     for(const product_img of product_imgs) {
         formData.append('product_img', product_img);
     }
-
+    console.log(formData.getAll('product_img'));
     const res = await fetch('http://localhost:3000/product/add', {
         method: 'POST',
         headers: {
@@ -32,7 +32,9 @@ export const SellForm: FC = () => {
         body: formData
     })
 
-    if(res.ok) console.log("Ok")
+    if(res.ok) {
+      alert("Product added successfully");
+    }
     else console.log("veendum moonji");
   }
 

@@ -20,7 +20,7 @@ model User {
 }
 
 model Product {
-  productId   Int          @id
+  productId   Int          @id @default(autoincrement())
   productname String
   productdesc String
   owner       User         @relation(fields: [ownerid], references: [userId])
@@ -29,7 +29,7 @@ model Product {
 }
 
 model ProductImg {
-  productImgId Int     @id
+  productImgId Int     @id @default(autoincrement())
   product      Product @relation(fields: [productId], references: [productId])
   productId    Int
   imgUrl       String

@@ -8,9 +8,10 @@ import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
     imports: [MulterModule.register({
-        dest: './upload'
+        dest: './uploads'
     })],
     controllers: [ProductController],
     providers: [ProductService, AuthService, Mailer, PrismaService]
 })
-export class ProductModule {}
+export class ProductModule {
+}

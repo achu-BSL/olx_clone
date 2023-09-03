@@ -99,7 +99,7 @@ export class UserService {
     if (!password) throw new BadRequestException();
 
     return {
-      token: await this.authService.login(user.useremail, user.username),
+      token: await this.authService.login(user.useremail, user.username, user.userId),
     };
   }
 }

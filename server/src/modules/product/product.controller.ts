@@ -1,15 +1,51 @@
-import { Controller, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { AuthUserGuard } from "src/auth/auth-user.guard";
+import {
+  Body,
+  Controller,
+  Post,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+  Request
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { AddProductDto } from './dto/add-product.dto';
+import { AuthUserGuard } from 'src/auth/auth-user.guard';
+import { ProductService } from './product.service';
+import { Request as Req } from 'express';
+import { UserPayload } from 'src/auth/interfaces/payload.interface';
 
 @Controller('product')
 export class ProductController {
 
-    @UseGuards(AuthUserGuard)
-    @Post('add')
-    // @UseInterceptors(FileInterceptor('product_img'))
-    addProduct(@UploadedFile() files: Array<Express.Multer.File>) {
-        console.log(files);
-        return ''
-    }
+  constructor(private readonly productService: ProductService) {}  
+
+  @UseGuards(AuthUserGuard)
+  @Post('add')
+  @UseInterceptors(
+    FilesInterceptor('product_img', 5, {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, './uploads');
+        },
+        filename: (req, file, callback) => {
+          const uniqueSuffix = Date.now() + -Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          const filename = `${uniqueSuffix}${ext}`;
+          callback(null, filename);
+        },
+      }),
+    }),
+  )
+  async addProduct(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() addProductDto: AddProductDto, @Request() req: Req & {user: UserPayload}
+  ) {
+    //todo Implement custome pipe for manipulating addProductDto
+    addProductDto.useremail = req.user.email;
+    addProductDto.product_imgs = files;
+    addProductDto.userId = req.user.userId;
+    return this.productService.addProduct(addProductDto);
+  }
 }
