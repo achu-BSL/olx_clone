@@ -22,6 +22,7 @@ model User {
 model Product {
   productId   Int          @id @default(autoincrement())
   productname String
+  productPrice String
   productdesc String
   owner       User         @relation(fields: [ownerid], references: [userId])
   ownerid     Int

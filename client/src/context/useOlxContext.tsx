@@ -8,6 +8,18 @@ type OlxAvailableLoginPages = "main" | "register" | "loginemail";
 type RegisterStage = "email" | "otp" | "details";
 type LoginStage = "email" | 'password';
 
+export interface ProductInterface {
+  productname: string;
+  productdesc: string;
+  productImgs: string[];
+  productPrice: string;
+  productId: number;
+  owner: {
+    username: string;
+    useremail: string;
+  }
+}
+
 interface OlxLoginStateInterface {
   loginToggle: boolean;
   selectedLoginPage: OlxAvailableLoginPages;
@@ -18,6 +30,8 @@ interface OlxLoginStateInterface {
 interface OlxContextInterface extends OlxLoginStateInterface {
   user: string | null;
   product_imgs: File[];
+  products: ProductInterface[];
+  setProducts: (product: ProductInterface[]) => void;
   setUser: (username: string | null) => void;
   setLoginToggleHandler: () => void;
   changeSelectedLoginPage: (newLoginPage: OlxAvailableLoginPages) => void;
@@ -30,6 +44,7 @@ interface OlxStateInterface {
   loginModal: OlxLoginStateInterface;
   user: string | null;
   product_imgs: File[];
+  products: ProductInterface[];
 }
 
 const OlxContext = createContext<OlxContextInterface>(
@@ -46,10 +61,11 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
       loginToggle: false,
       selectedLoginPage: "main",
       registerStage: "email",
-      loginStage: 'email'
+      loginStage: 'email',
     },
     user: null,
-    product_imgs: []
+    product_imgs: [],
+    products: []
   });
   /**
    * Toggle login page.
@@ -95,6 +111,11 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
     setState(prev => ({...prev, product_imgs: prev.product_imgs.filter((imgurl, index) => index !== idx)}))
   }
 
+
+  const setProducts = (products: ProductInterface[]) => {
+    setState(prev => ({...prev, products}))
+  }
+
   return (
     <OlxContext.Provider
       value={{
@@ -104,6 +125,8 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
         registerStage: state.loginModal.registerStage,
         user: state.user,
         product_imgs: state.product_imgs,
+        products: state.products,
+        setProducts,
         setUser,
         setLoginToggleHandler,
         changeSelectedLoginPage,

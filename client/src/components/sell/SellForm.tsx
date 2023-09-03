@@ -41,7 +41,7 @@ export const SellForm: FC = () => {
   return (
     <div className="bg-black w-full h-screen bg-opacity-90 flex justify-center">
       <form onSubmit={submitHandler}>
-        <div className="flex flex-wrap flex-col md:flex-row px-8 md:px-6 py-6 md:py-16 max-w-[1280px] gap-5">
+        <div className="flex flex-wrap flex-col md:flex-row px-4 md:px-6 py-3 md:py-16 max-w-[1280px] gap-5">
           <div className="flex flex-col flex-1">
             <label
               className="font-semibold text-white mb-2"
@@ -60,6 +60,21 @@ export const SellForm: FC = () => {
           <div className="flex flex-col md:w-[50%]">
             <label
               className="font-semibold text-white mb-2"
+              htmlFor="product_price"
+            >
+              Product Price
+            </label>
+            <input
+              className="px-4 py-2 rounded-md bg-gray-800 text-white"
+              type="number"
+              name="product_price"
+              id="product_price"
+              placeholder="Product price"
+            />
+          </div>
+          <div className="flex flex-col md:w-[50%]">
+            <label
+              className="font-semibold text-white mb-2"
               htmlFor="product_desc"
             >
               Product Description
@@ -72,6 +87,7 @@ export const SellForm: FC = () => {
               rows={10}
             ></textarea>
           </div>
+
           <div className="flex flex-col flex-1">
             <label
               className="font-semibold text-white mb-2"

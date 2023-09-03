@@ -5,7 +5,8 @@ import {
   UploadedFiles,
   UseGuards,
   UseInterceptors,
-  Request
+  Request,
+  Get
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -47,5 +48,15 @@ export class ProductController {
     addProductDto.product_imgs = files;
     addProductDto.userId = req.user.userId;
     return this.productService.addProduct(addProductDto);
+  }
+
+  @Get('getallproducts')
+  async getAllProducts() {
+    return this.productService.getAllProducts();
+  }
+
+  @Get('clear')
+  async removeAllProducts () {
+    return this.productService.removeAllProducts();
   }
 }
