@@ -1,21 +1,22 @@
 import { FC, useMemo, useState } from "react";
 import { useOlxContext } from "../../context/useOlxContext";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
 
-export const ProductView: FC<{ id: number }> = ({ id }) => {
+
+export const ProductView: FC = () => {
+    const {id} = useParams();
   const { products } = useOlxContext();
   const [selectedImgIdx, setSelectedImgIdx] = useState(0);
 
   const currProductDetails = useMemo(() => {
-    return products.find((product) => product.productId === id);
+    return products.find((product) => product.productId === +id!);
   }, [id]);
 
-  console.log(currProductDetails);
 
   const changeSelectedImgIdx = (change: 1 | -1) => {
     if(selectedImgIdx === 0 && change === -1) return;
     setSelectedImgIdx(prev => {
-        console.log((prev + change) % (currProductDetails!.productImgs.length));
         return (prev + change) % (currProductDetails!.productImgs.length)
     });
   }

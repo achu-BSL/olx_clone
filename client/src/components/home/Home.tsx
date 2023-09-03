@@ -2,6 +2,7 @@ import { FC, useEffect } from "react";
 import { gwagon } from "../../assets";
 import { FavoriteBorder } from "@mui/icons-material";
 import { ProductInterface, useOlxContext } from "../../context/useOlxContext";
+import { useNavigate } from "react-router-dom";
 
 interface ItemProps {
   name: string;
@@ -12,8 +13,10 @@ interface ItemProps {
 
 const Item: FC<ItemProps> = ({ name, img, price, id }) => {
 
+  const navigate = useNavigate();
+
   const productClickHandler = () => {
-    console.log(id);
+    navigate(`/${id}`);
   }
 
   return (
@@ -39,6 +42,7 @@ export const Home: FC = () => {
 
   useEffect(() => {
     async function fetchData() {
+      console.log("fetching");
       const res = await fetch("http://localhost:3000/product/getallproducts", {
         method: "GET",
       });

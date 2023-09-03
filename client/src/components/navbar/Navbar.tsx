@@ -3,6 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import "./Navbar.css";
 import { Login } from "./Login";
 import { useOlxContext } from "../../context/useOlxContext";
+import { Link } from "react-router-dom";
 
 export const Navbar: FC = () => {
   const { loginToggle, setLoginToggleHandler, user, setUser } = useOlxContext();
@@ -55,7 +56,7 @@ export const Navbar: FC = () => {
             )}
             <button className="h-10 mx-2 px-4 border-2 rounded-full border-slate-900 sell-button">
               <span className="font-bold text-2xl">+</span>
-              <span className="font-semibold">SELL</span>
+              <Link to="/sell" className="font-semibold">SELL </Link>
             </button>
           </div>
         </div>

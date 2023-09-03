@@ -1,4 +1,6 @@
 import { createContext, useContext, useState } from "react";
+import { decodeToken } from "../helper/decodeToken";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface OlxContextProvider {
   children: React.ReactNode;
@@ -44,7 +46,6 @@ interface OlxStateInterface {
   loginModal: OlxLoginStateInterface;
   user: string | null;
   product_imgs: File[];
-  products: ProductInterface[];
 }
 
 const OlxContext = createContext<OlxContextInterface>(
@@ -63,10 +64,12 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
       registerStage: "email",
       loginStage: 'email',
     },
-    user: null,
+    user: decodeToken(),
     product_imgs: [],
-    products: []
   });
+
+  const [productsState, setProductsState] = useLocalStorage<ProductInterface[]>('products', []);
+
   /**
    * Toggle login page.
    * To show and hide the login modal.
@@ -113,7 +116,7 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
 
 
   const setProducts = (products: ProductInterface[]) => {
-    setState(prev => ({...prev, products}))
+    setProductsState(prev => products)
   }
 
   return (
@@ -125,7 +128,7 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
         registerStage: state.loginModal.registerStage,
         user: state.user,
         product_imgs: state.product_imgs,
-        products: state.products,
+        products: productsState,
         setProducts,
         setUser,
         setLoginToggleHandler,

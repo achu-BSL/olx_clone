@@ -1,3 +1,4 @@
+import { Route, Router, Routes, useParams } from "react-router-dom";
 import "./App.css";
 import { Home } from "./components/home/Home";
 import { Navbar } from "./components/navbar/Navbar";
@@ -8,12 +9,12 @@ import { OlxContextProvider } from "./context/useOlxContext";
 function App() {
   return (
     <>
-      <OlxContextProvider>
-        <Navbar />
-        {/* <SellForm /> */}
-        {/* <Home /> */}
-        <ProductView id={3}/>
-      </OlxContextProvider>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sell" element={<SellForm />} />
+        <Route path=":id" element={<ProductView  />} />
+      </Routes>
     </>
   );
 }
