@@ -1,11 +1,13 @@
 import { AddAPhoto } from "@mui/icons-material";
-import { ChangeEvent, FC, FormEvent, useRef } from "react";
+import { ChangeEvent, FC, FormEvent, useEffect, useRef } from "react";
 import { useOlxContext } from "../../context/useOlxContext";
+import { useNavigate } from "react-router-dom";
 
 export const SellForm: FC = () => {
   const fileInp = useRef<HTMLInputElement>(null);
+  const navigator = useNavigate();
 
-  const { product_imgs, removeProductImg, addProductImg } = useOlxContext();
+  const { product_imgs, removeProductImg, addProductImg, setLoginToggleHandler, user } = useOlxContext();
 
   const addProductImgHandler = () => {
     fileInp.current!.click();
@@ -23,7 +25,7 @@ export const SellForm: FC = () => {
     for(const product_img of product_imgs) {
         formData.append('product_img', product_img);
     }
-    console.log(formData.getAll('product_img'));
+    const currForm = e.currentTarget;
     const res = await fetch('http://localhost:3000/product/add', {
         method: 'POST',
         headers: {
@@ -34,9 +36,17 @@ export const SellForm: FC = () => {
 
     if(res.ok) {
       alert("Product added successfully");
+      currForm.reset();
     }
     else console.log("veendum moonji");
   }
+
+  useEffect(() => {
+    if(!user) {
+      navigator('/');
+      setLoginToggleHandler();
+    }
+  }, [])
 
   return (
     <div className="bg-black w-full h-screen bg-opacity-90 flex justify-center">

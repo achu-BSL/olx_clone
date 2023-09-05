@@ -33,6 +33,8 @@ interface OlxContextInterface extends OlxLoginStateInterface {
   user: string | null;
   product_imgs: File[];
   products: ProductInterface[];
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
   setProducts: (product: ProductInterface[]) => void;
   setUser: (username: string | null) => void;
   setLoginToggleHandler: () => void;
@@ -46,6 +48,7 @@ interface OlxStateInterface {
   loginModal: OlxLoginStateInterface;
   user: string | null;
   product_imgs: File[];
+  loading: boolean;
 }
 
 const OlxContext = createContext<OlxContextInterface>(
@@ -66,6 +69,7 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
     },
     user: decodeToken(),
     product_imgs: [],
+    loading: false
   });
 
   const [productsState, setProductsState] = useLocalStorage<ProductInterface[]>('products', []);
@@ -95,6 +99,10 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
     }));
   };
 
+  /**
+   * To switch verious register stage.
+   * @param newStage 
+   */
   const setRegisterStage = (newStage: RegisterStage) => {
     setState((prev) => ({
       ...prev,
@@ -119,6 +127,10 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
     setProductsState(prev => products)
   }
 
+  const setLoading = (loading: boolean) => {
+    setState(prev => ({...prev, loading}))
+  }
+
   return (
     <OlxContext.Provider
       value={{
@@ -129,6 +141,8 @@ export const OlxContextProvider = ({ children }: OlxContextProvider) => {
         user: state.user,
         product_imgs: state.product_imgs,
         products: productsState,
+        loading: state.loading,
+        setLoading,
         setProducts,
         setUser,
         setLoginToggleHandler,

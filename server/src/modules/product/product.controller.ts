@@ -6,7 +6,7 @@ import {
   UseGuards,
   UseInterceptors,
   Request,
-  Get
+  Get,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -14,14 +14,19 @@ import { extname } from 'path';
 import { AddProductDto } from './dto/add-product.dto';
 import { AuthUserGuard } from 'src/auth/auth-user.guard';
 import { ProductService } from './product.service';
-import { Request as Req } from 'express';
-import { UserPayload } from 'src/auth/interfaces/payload.interface';
+import { TransformAddProductDtoInterceptor } from './interceptor/tranform-addProductDto..interceptor';
 
 @Controller('product')
 export class ProductController {
+  constructor(private readonly productService: ProductService) {}
 
-  constructor(private readonly productService: ProductService) {}  
 
+  /**
+   * The service for adding new product.
+   * 
+   * @param addProductDto - The product details;
+   * @returns 
+   */
   @UseGuards(AuthUserGuard)
   @Post('add')
   @UseInterceptors(
@@ -38,25 +43,37 @@ export class ProductController {
         },
       }),
     }),
+    TransformAddProductDtoInterceptor,
   )
-  async addProduct(
-    @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() addProductDto: AddProductDto, @Request() req: Req & {user: UserPayload}
-  ) {
-    //todo Implement custome pipe for manipulating addProductDto
-    addProductDto.useremail = req.user.email;
-    addProductDto.product_imgs = files;
-    addProductDto.userId = req.user.userId;
+  async addProduct(@Body() addProductDto: AddProductDto) {
     return this.productService.addProduct(addProductDto);
   }
 
+
+  /**
+   * To get all product details.
+   * 
+   * @returns - {
+   *   productname: string,
+   *   productdesc: string,
+   *   productprice: strign,
+   *   owner: {
+   *    ownerId: number,
+   *    useremail: string,
+   *   },
+   *   productImgs: string[]
+   * }
+   */
   @Get('getallproducts')
   async getAllProducts() {
     return this.productService.getAllProducts();
   }
 
   @Get('clear')
-  async removeAllProducts () {
+  async removeAllProducts() {
     return this.productService.removeAllProducts();
   }
+
+  @Post('test')
+  test() {}
 }

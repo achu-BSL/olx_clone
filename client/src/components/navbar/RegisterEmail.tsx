@@ -6,7 +6,7 @@ export const RegisterEmail: FC = () => {
   const button = useRef<HTMLButtonElement>(null);
 
   //Todo Fetch/submit email and get token
-  const { setRegisterStage } = useOlxContext();
+  const { setRegisterStage, loading, setLoading } = useOlxContext();
 
   useEffect(() => {
     button.current!.disabled = true;
@@ -44,6 +44,7 @@ export const RegisterEmail: FC = () => {
   };
 
   const buttonClickHandler = async () => {
+    setLoading(true);
     const response = await fetch("http://localhost:3000/user/register/email", {
       method: "POST",
       headers: {
@@ -57,6 +58,7 @@ export const RegisterEmail: FC = () => {
       const data = await response.json();
       localStorage.setItem('otpToken', data.otp_token);
       setRegisterStage('otp');
+      setLoading(false);
     } else console.log("Moonji");
   };
 
@@ -92,8 +94,9 @@ export const RegisterEmail: FC = () => {
           onClick={buttonClickHandler}
           className="bg-black text-white text-xl py-3 rounded-md font-medium shadow-md disabled:bg-slate-500"
           ref={button}
+          disabled={loading}
         >
-          Send OTP
+          {loading ? "OTP sending..." : "Send OTP"}
         </button>
         <span className="text-center text-xs text-slate-500">
           Your contact number is never shared with external parties nor do we

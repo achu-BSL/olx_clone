@@ -9,8 +9,8 @@ export const Login: React.FC = () => {
   const { setLoginToggleHandler, selectedLoginPage } = useOlxContext();
   return (
     <div className="absolute w-full h-full bg-black bg-opacity-60 z-10 flex justify-center items-center">
-      <div className="bg-white w-full h-full md:w-[400px] md:h-[600px] md:rounded-sm shadow-xl p-4">
-        <button className="" onClick={setLoginToggleHandler}>
+      <div className="relative bg-white w-full h-full md:w-[400px] md:h-[600px] md:rounded-sm shadow-xl p-4">
+        <button className="absolute right-2 top-1 text-2xl" onClick={setLoginToggleHandler}>
           X
         </button>
         {

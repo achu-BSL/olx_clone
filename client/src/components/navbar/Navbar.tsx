@@ -7,12 +7,10 @@ import { Link } from "react-router-dom";
 
 export const Navbar: FC = () => {
   const { loginToggle, setLoginToggleHandler, user, setUser } = useOlxContext();
-  console.log("rendering");
   const logoutButtonHandler = () => {
     setUser(null);
-    localStorage.removeItem('token');
-    console.log("Logout");
-  }
+    localStorage.removeItem("token");
+  };
   return (
     <>
       {loginToggle && <Login />}
@@ -24,7 +22,7 @@ export const Navbar: FC = () => {
             name=""
             id=""
             defaultValue="English"
-            className="px-3 border-2 border-slate-900 rounded-md shadow-sm"
+            className="px-3 border-2 border-slate-900 rounded-md shadow-sm lg:flex hidden"
           />
           <div className="grow flex relative">
             <input
@@ -36,7 +34,7 @@ export const Navbar: FC = () => {
               <SearchIcon />
             </button>
           </div>
-          <select name="" id="">
+          <select className="lg:block hidden" name="" id="">
             <option value="">English</option>
             <option value="">English</option>
             <option value="">English</option>
@@ -52,12 +50,21 @@ export const Navbar: FC = () => {
                 Login
               </button>
             ) : (
-              <button className="font-semibold underline" onClick={logoutButtonHandler}>Logout</button>
+              <button
+                className="font-semibold underline"
+                onClick={logoutButtonHandler}
+              >
+                Logout
+              </button>
             )}
-            <button className="h-10 mx-2 px-4 border-2 rounded-full border-slate-900 sell-button">
-              <span className="font-bold text-2xl">+</span>
-              <Link to="/sell" className="font-semibold">SELL </Link>
-            </button>
+            {user && (
+              <button className="h-10 mx-2 px-4 border-2 rounded-full border-slate-900 sell-button">
+                <span className="font-bold text-2xl">+</span>
+                <Link to="/sell" className="font-semibold">
+                  SELL{" "}
+                </Link>
+              </button>
+            )}
           </div>
         </div>
       </nav>

@@ -5,7 +5,7 @@ import { setSuccess } from "../../utils/setSuccess";
 import { setError } from "../../utils/setError";
 
 export const RegisterOTP: FC = () => {
-  const { setRegisterStage } = useOlxContext();
+  const { setRegisterStage, loading, setLoading } = useOlxContext();
   const otpInp = useRef<HTMLInputElement>(null);
   const resendButton = useRef<HTMLButtonElement>(null);
 
@@ -50,6 +50,7 @@ export const RegisterOTP: FC = () => {
 
   const verifyButtonClickHandler = async () => {
     if (validateOTP(otpInp.current!.value)) {
+      setLoading(true);
       const res = await fetch("http://localhost:3000/user/register/otp", {
         method: "POST",
         headers: {
@@ -69,10 +70,12 @@ export const RegisterOTP: FC = () => {
       } else {
         console.log("again moonji");
       }
+      setLoading(false);
     }
   };
 
   const resendButtonClickHandler = async () => {
+    setLoading(true)
     const res = await fetch("http://localhost:3000/user/register/otp/resend", {
       method: "GET",
       headers: {
@@ -85,6 +88,7 @@ export const RegisterOTP: FC = () => {
         resendButton.current!.disabled = false;
       }, 6000)
       alert("OTP resend succefully");
+      setLoading(false);
     }
   };
 
@@ -105,6 +109,7 @@ export const RegisterOTP: FC = () => {
           onClick={resendButtonClickHandler}
           className="bg-slate-900 text-white px-4 py-2 rounded-r-md disabled:bg-slate-500"
           ref={resendButton}
+          disabled={loading}
         >
           resend
         </button>
@@ -113,10 +118,12 @@ export const RegisterOTP: FC = () => {
         <button
           onClick={verifyButtonClickHandler}
           className="bg-black text-white text-xl py-3 rounded-md font-medium shadow-md"
+          disabled={loading}
         >
-          Verify
+          {loading ? "Verifying" : "Verify"}
+          
         </button>
-
+        <button onClick={() => setRegisterStage('email')} className="text-red-700">change email?</button>
         <span className="text-center text-xs text-slate-500">
           Your contact number is never shared with external parties nor do we
           use it to spam you in any way.
