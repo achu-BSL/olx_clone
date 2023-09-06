@@ -1,7 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Inject, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
 import { generateOTP } from './generateOTP';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 interface SendMailInterface {
   toEmail: string;

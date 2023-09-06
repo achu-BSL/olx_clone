@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Mailer } from 'src/utils/mail.util';
 import { RegisterUserDto } from './dto/register-user.dto';
 import * as bcrypt from 'bcrypt';
